@@ -6,6 +6,7 @@
 
     <groupId>com.zjts</groupId>
     <artifactId>bdgateway</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
@@ -20,4 +21,19 @@
             </plugin>
         </plugins>
     </build>
+    <modules>
+        <module>Protocol808</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zjts</groupId>
+            <artifactId>Protocol808</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

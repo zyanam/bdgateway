@@ -1,5 +1,8 @@
 package com.zjts.bdgateway;
 
+import com.zjts.protocol808.Message808;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -18,15 +21,15 @@ public class IOServer {
                         try {
                             byte[] buffer = new byte[1024];
                             InputStream inputStream = socket.getInputStream();
+
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             while (true) {
                                 int len;
                                 while ((len = inputStream.read(buffer)) != -1) {
-                                    for (int i = 0; i < len; i++) {
-                                        byte b = buffer[i];
-                                        int it = b & 0xff;
-                                        System.out.println(Integer.toHexString(it));
-                                    }
+                                    baos.write(buffer, 0, len);
                                 }
+
+                                
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

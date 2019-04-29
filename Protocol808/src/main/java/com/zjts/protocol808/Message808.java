@@ -2,12 +2,18 @@ package com.zjts.protocol808;
 
 import com.zjts.protocol808.MessageBodys.Message808Body;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 public class Message808 implements Analysisable {
+    public Message808(){}
+
     public Message808(Message808Head message808Head,
-                      Message808Body message808Body){
+                      Message808Body message808Body) {
         this.messageHead = message808Head;
         this.messageBody = message808Body;
     }
+
     /*
      * 808协议标识符，以0x7E开头，以0x7E结尾；
      */
@@ -70,13 +76,31 @@ public class Message808 implements Analysisable {
     }
 
 
-    /*
-     * 反转义
+    /**
+     * 转义还原
      */
     private byte[] unescape(byte[] bytes) {
-        byte[] buffer = new byte[bytes.length - 3];
-        for (int i = 1; i < bytes.length - 1; i++) {
-            
+        int csc = 0;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        for (int i = 0; i < bytes.length; i++) {
+            int actual = bytes[i];
+            if ((bytes[i] & 0xFF) == 0x7D) {
+                if (bytes[i] == 0x01) {
+                    actual = 0x7D;
+                } else if (bytes[i] == 0x02) {
+                    actual = 0x7E;
+                }
+                i++;
+            }
+            csc ^= actual;
+            baos.write(actual);
         }
+        byte[] reBytes = baos.toByteArray();
+        try {
+            baos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return reBytes;
     }
 }
